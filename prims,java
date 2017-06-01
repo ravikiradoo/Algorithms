@@ -1,0 +1,117 @@
+import java.io.*;
+import java.util.*;
+
+class Edge
+{
+    int dst;
+    int weight;
+ 
+}
+
+class Graph{
+    
+    int V;
+    int E;
+    ArrayList<Edge> Edges[];
+    int parent[];
+    Edge result[];
+    boolean mstSet[];
+    int key[];
+	Graph(int v)
+	{
+	    V=v;
+	    Edges=new ArrayList[V];
+	    parent=new int[V];
+	    mstSet=new boolean[V];
+	    result=new Edge[V];
+	    key=new int[V];
+	 	for(int i=0;i<V;i++)
+    	{
+    	Edges[i]=new ArrayList<Edge>();
+    	parent[i]=i;
+    	mstSet[i]=false;
+    	key[i]=Integer.MAX_VALUE;
+    	}
+    	key[0]=0;
+    	parent[0]=-1;
+	 
+	}
+	void AddEdges(int a,int b,int c)
+	{
+	   Edge edge=new Edge();
+	   edge.dst=b;
+	   edge.weight=c;
+	   Edges[a].add(edge);
+	}
+	
+void PrimMst()
+{
+
+    
+    for(int i=0;i<V-1;i++)
+    {
+            int u=minkey();
+            
+        mstSet[u]=true;
+        for(int j=0;j<Edges[u].size();j++)
+        {
+            if(mstSet[Edges[u].get(j).dst]==false && Edges[u].get(j).weight<key[Edges[u].get(j).dst])
+            {
+                parent[Edges[u].get(j).dst]=u;
+                key[Edges[u].get(j).dst]=Edges[u].get(j).weight;
+            }
+        }
+        
+    }
+    
+}
+int minkey()
+{
+    int min=Integer.MAX_VALUE;
+    int index=-1;
+    for(int i=0;i<V;i++)
+    {
+        if(mstSet[i]==false && key[i]<min)
+        {
+            min=key[i];
+            index=i;
+        }
+        
+    }
+    return index;
+}
+
+	
+}
+class Main
+{
+    public static void main(String args[])
+    {
+        Scanner scan = new Scanner(System.in);
+        
+        
+        
+        int n= scan.nextInt();
+        Graph graph=new Graph(n);
+        int e=scan.nextInt();
+        
+      for(int i=0;i<e;i++)
+      {
+          graph.AddEdges(scan.nextInt(),scan.nextInt(),scan.nextInt());
+      }
+
+       graph.PrimMst();
+          for(int i=1;i<n;i++)
+          {
+              System.out.println(graph.parent[i]+"->"+i+" "+graph.key[i]);
+          }
+
+          }
+          
+        
+         
+   }
+        
+    
+    
+    
